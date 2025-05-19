@@ -38,12 +38,3 @@ inline void parseCLA_1d(int argc, char **argv, size_t &nx, size_t &nItWarmUp, si
         nIt = atoi(argv[i]);
     ++i;
 }
-
-inline void printStats(const std::chrono::duration<double> elapsedSeconds, size_t nIt, size_t nCells, size_t numBytesPerCell, size_t numFlopsPerCell) {
-    std::cout << "  #cells / #it:  " << nCells << " / " << nIt << "\n";
-    std::cout << "  elapsed time:  " << 1e3 * elapsedSeconds.count() << " ms\n";
-    std::cout << "  per iteration: " << 1e3 * elapsedSeconds.count() / nIt << " ms\n";
-    std::cout << "  MLUP/s:        " << 1e-6 * nCells * nIt / elapsedSeconds.count() << "\n";
-    std::cout << "  bandwidth:     " << 1e-9 * numBytesPerCell * nCells * nIt / elapsedSeconds.count() << " GB/s\n";
-    std::cout << "  compute:       " << 1e-9 * numFlopsPerCell * nCells * nIt / elapsedSeconds.count() << " GFLOP/s\n";
-}
