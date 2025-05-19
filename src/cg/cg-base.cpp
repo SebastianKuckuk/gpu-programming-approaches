@@ -93,7 +93,6 @@ inline size_t conjugateGradient(const double *const __restrict__ rhs, double *__
 
 
 int main(int argc, char *argv[]) {
-    char *doubleName;
     size_t nx, ny, nItWarmUp, nIt;
     parseCLA_2d(argc, argv, nx, ny, nItWarmUp, nIt);
 

@@ -11,7 +11,6 @@ inline void stencil2d(const double *const __restrict__ u, double *__restrict__ u
 
 
 int main(int argc, char *argv[]) {
-    char *doubleName;
     size_t nx, ny, nItWarmUp, nIt;
     parseCLA_2d(argc, argv, nx, ny, nItWarmUp, nIt);
 
