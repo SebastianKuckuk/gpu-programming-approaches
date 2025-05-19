@@ -3,3 +3,13 @@
 __pycache__
 
 *.sqlite
+
+build/increase/*
+!build/increase/.gitkeep
+
+build/stream/*
+!build/stream/.gitkeep
+build/stencil-2d/*
+!build/stencil-2d/.gitkeep
+build/cg/*
+!build/cg/.gitkeep
