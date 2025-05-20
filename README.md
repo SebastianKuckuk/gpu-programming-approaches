@@ -4,7 +4,7 @@ This repository collects material for the full-day workshop *GPU Programming App
 
 ## Sections
 
-The tutorial starts with an [TODO:introductory presentation]() with the following content:
+The tutorial starts with an [introductory presentation](./material/introduction-to-gpu-programming-techniques.pdf) with the following content:
 * Basics of GPU architecture
 * GPU programming on an abstract level
 * Popular approaches to GPU programming
