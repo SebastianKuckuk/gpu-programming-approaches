@@ -1,0 +1,113 @@
+Bootstrap: docker
+From: nvcr.io/nvidia/nvhpc:25.3-devel-cuda_multi-ubuntu22.04
+
+
+%runscript
+   #!/bin/bash
+
+   source /opt/intel/oneapi/setvars.sh --include-intel-llvm
+
+   jupyter lab --no-browser --ip 0.0.0.0 --port 14860
+   # batchspawner-singleuser jupyterhub-singleuser
+
+
+%environment
+    export http_proxy=http://proxy.nhr.fau.de:80
+        export https_proxy=http://proxy.nhr.fau.de:80
+
+        # bash -c 'source /opt/intel/oneapi/setvars.sh --include-intel-llvm'
+
+        source "/root/conda/etc/profile.d/conda.sh"
+
+    conda config --append envs_dirs /root/conda-env
+        conda activate nhr-summer-school-2025
+
+
+%post
+    # set up basics
+
+    apt update
+    apt dist-upgrade -y
+
+    apt install -y cmake \
+                    pkg-config \
+                    build-essential \
+                    gpg-agent \
+                    wget \
+                    curl
+
+
+    # navigate to root folder
+
+    cd /root
+
+
+    # set up Python and install required packages
+
+    wget -O Miniforge3.sh "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+
+    bash Miniforge3.sh -b -p "/root/conda"
+
+    . "/root/conda/etc/profile.d/conda.sh"
+
+    conda create -c conda-forge -p /root/conda-env/nhr-summer-school-2025 -y
+    conda config --append envs_dirs /root/conda-env
+    conda activate nhr-summer-school-2025
+
+    conda install sympy \
+                    pandas \
+                    matplotlib \
+                    openpyxl
+
+    # add jupyter hub / lab / nb + batchspawner
+    conda install jupyterhub \
+                    jupyterlab \
+                    notebook \
+                    batchspawner
+
+    # add jupyter extensions
+    conda install jupyterlab-git \
+                    jupyterlab-spellchecker \
+                    jupyterlab-system-monitor \
+                    jupyterlab_code_formatter \
+                    jupyterlab-lsp \
+                    python-lsp-server \
+                    r-languageserver
+
+
+    # set up Intel toolkit with Nvidia GPU support
+
+    wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/6bfca885-4156-491e-849b-1cd7da9cc760/intel-oneapi-base-toolkit-2025.1.1.36_offline.sh
+
+    sh intel-oneapi-base-toolkit-2025.1.1.36_offline.sh --remove-extracted-files yes -a --cli --silent --eula accept --components intel.oneapi.lin.dpcpp-ct:intel.oneapi.lin.dpcpp_dbg:intel.oneapi.lin.dpl:intel.oneapi.lin.tbb.devel:intel.oneapi.lin.ccl.devel:intel.oneapi.lin.dpcpp-cpp-compiler:intel.oneapi.lin.ipp.devel:intel.oneapi.lin.mkl.devel
+
+    rm intel-oneapi-base-toolkit-2025.1.1.36_offline.sh
+
+    # add plug-in for Nvidia GPUs
+    curl -LOJ "https://developer.codeplay.com/api/v1/products/download?product=oneapi&variant=nvidia&version=2025.1.1&filters[]=linux"
+
+    bash ./oneapi-for-nvidia-gpus-2025.1.1-rocm-all-linux.sh -y
+
+    rm oneapi-for-nvidia-gpus-2025.1.1-rocm-all-linux.sh
+
+
+    # set up Kokkos
+
+    mkdir kokkos
+    git clone https://github.com/kokkos/kokkos.git kokkos
+    cd kokkos
+
+    mkdir build-serial && cd build-serial
+    cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=/root/kokkos/install-serial -DKokkos_ARCH_NATIVE=ON
+    make -j 8 && make install
+    cd ..
+
+    mkdir build-omp && cd build-omp
+    cmake .. -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=/root/kokkos/install-omp -DKokkos_ENABLE_OPENMP=ON -DKokkos_ARCH_NATIVE=ON
+    make -j 8 && make install
+    cd ..
+
+    mkdir build-cuda && cd build-cuda
+    cmake .. -DCMAKE_CXX_COMPILER=/root/kokkos/bin/nvcc_wrapper -DCMAKE_INSTALL_PREFIX=/root/kokkos/install-cuda -DKokkos_ENABLE_CUDA=ON -DKokkos_ENABLE_CUDA_LAMBDA=ON -DKokkos_ARCH_AMPERE86=ON -DKokkos_ARCH_NATIVE=ON
+    make -j 8 && make install
+    cd ..
