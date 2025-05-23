@@ -9,7 +9,6 @@ inline void stream(const double *const __restrict__ src, double *__restrict__ de
 
 
 int main(int argc, char *argv[]) {
-    char *doubleName;
     size_t nx, nItWarmUp, nIt;
     parseCLA_1d(argc, argv, nx, nItWarmUp, nIt);
 
