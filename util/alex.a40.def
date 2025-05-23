@@ -13,14 +13,14 @@ From: nvcr.io/nvidia/nvhpc:25.3-devel-cuda_multi-ubuntu22.04
 
 %environment
     export http_proxy=http://proxy.nhr.fau.de:80
-        export https_proxy=http://proxy.nhr.fau.de:80
+    export https_proxy=http://proxy.nhr.fau.de:80
 
-        # bash -c 'source /opt/intel/oneapi/setvars.sh --include-intel-llvm'
+    # bash -c 'source /opt/intel/oneapi/setvars.sh --include-intel-llvm'
 
-        source "/root/conda/etc/profile.d/conda.sh"
+    source "/root/conda/etc/profile.d/conda.sh"
 
     conda config --append envs_dirs /root/conda-env
-        conda activate nhr-summer-school-2025
+    conda activate nhr-summer-school-2025
 
 
 %post
