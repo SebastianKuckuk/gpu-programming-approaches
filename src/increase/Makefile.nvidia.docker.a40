@@ -2,12 +2,12 @@
 
 TEST_CLASS = benchmark
 TEST_CASE  = increase
-BUILD_DIR  = ../../../build/benchmark/increase
+BUILD_DIR  = ../../build/increase
 
 
 # default parameters
 
-PARAMETERS = double 67108864 2 10
+PARAMETERS = 67108864 2 10
 
 
 # all
@@ -25,6 +25,8 @@ targets = \
 	increase-sycl-expl \
 	increase-sycl-mm \
 	increase-std-par \
+	increase-thrust-expl \
+	increase-thrust-mm \
 	increase-kokkos-serial \
 	increase-kokkos-omp-host \
 	increase-kokkos-cuda
@@ -38,50 +40,56 @@ mk-target-dir:
 
 # build rules
 
-$(BUILD_DIR)/increase-base: increase-base.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-base: increase-base.cpp increase-util.h ../util.h | mk-target-dir
 	g++ -O3 -march=native -std=c++17 -o $(BUILD_DIR)/increase-base increase-base.cpp
 
-$(BUILD_DIR)/increase-omp-host: increase-omp-host.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-omp-host: increase-omp-host.cpp increase-util.h ../util.h | mk-target-dir
 	g++ -O3 -march=native -std=c++17 -fopenmp -o $(BUILD_DIR)/increase-omp-host increase-omp-host.cpp
 
-$(BUILD_DIR)/increase-omp-target-expl: increase-omp-target-expl.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-omp-target-expl: increase-omp-target-expl.cpp increase-util.h ../util.h | mk-target-dir
 	nvc++ -O3 -std=c++17 -mp=gpu -target=gpu -o $(BUILD_DIR)/increase-omp-target-expl increase-omp-target-expl.cpp
 
-$(BUILD_DIR)/increase-omp-target-mm: increase-omp-target-mm.cpp increase-util.h ../../util.h
-	nvc++ -O3 -std=c++17 -mp=gpu -target=gpu -gpu=mem:unified -o $(BUILD_DIR)/increase-omp-target-mm increase-omp-target-mm.cpp
+$(BUILD_DIR)/increase-omp-target-mm: increase-omp-target-mm.cpp increase-util.h ../util.h | mk-target-dir
+	nvc++ -O3 -std=c++17 -mp=gpu -target=gpu -gpu=mem:managed -o $(BUILD_DIR)/increase-omp-target-mm increase-omp-target-mm.cpp
 
-$(BUILD_DIR)/increase-openacc-expl: increase-openacc-expl.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-openacc-expl: increase-openacc-expl.cpp increase-util.h ../util.h | mk-target-dir
 	nvc++ -O3 -std=c++17 -acc=gpu -target=gpu -o $(BUILD_DIR)/increase-openacc-expl increase-openacc-expl.cpp
 
-$(BUILD_DIR)/increase-openacc-mm: increase-openacc-mm.cpp increase-util.h ../../util.h
-	nvc++ -O3 -std=c++17 -acc=gpu -target=gpu -gpu=mem:unified -o $(BUILD_DIR)/increase-openacc-mm increase-openacc-mm.cpp
+$(BUILD_DIR)/increase-openacc-mm: increase-openacc-mm.cpp increase-util.h ../util.h | mk-target-dir
+	nvc++ -O3 -std=c++17 -acc=gpu -target=gpu -gpu=mem:managed -o $(BUILD_DIR)/increase-openacc-mm increase-openacc-mm.cpp
 
-$(BUILD_DIR)/increase-cuda-expl: increase-cuda-expl.cu increase-util.h ../../util.h
+$(BUILD_DIR)/increase-cuda-expl: increase-cuda-expl.cu increase-util.h ../util.h | mk-target-dir
 	nvcc -O3 -std=c++17 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -o $(BUILD_DIR)/increase-cuda-expl increase-cuda-expl.cu
 
-$(BUILD_DIR)/increase-cuda-mm: increase-cuda-mm.cu increase-util.h ../../util.h
+$(BUILD_DIR)/increase-cuda-mm: increase-cuda-mm.cu increase-util.h ../util.h | mk-target-dir
 	nvcc -O3 -std=c++17 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -o $(BUILD_DIR)/increase-cuda-mm increase-cuda-mm.cu
 
-$(BUILD_DIR)/increase-sycl-buffer: increase-sycl-buffer.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-sycl-buffer: increase-sycl-buffer.cpp increase-util.h ../util.h | mk-target-dir
 	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/increase-sycl-buffer increase-sycl-buffer.cpp
 
-$(BUILD_DIR)/increase-sycl-expl: increase-sycl-expl.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-sycl-expl: increase-sycl-expl.cpp increase-util.h ../util.h | mk-target-dir
 	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/increase-sycl-expl increase-sycl-expl.cpp
 
-$(BUILD_DIR)/increase-sycl-mm: increase-sycl-mm.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-sycl-mm: increase-sycl-mm.cpp increase-util.h ../util.h | mk-target-dir
 	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/increase-sycl-mm increase-sycl-mm.cpp
 
-$(BUILD_DIR)/increase-std-par: increase-std-par.cpp increase-util.h ../../util.h
+$(BUILD_DIR)/increase-std-par: increase-std-par.cpp increase-util.h ../util.h | mk-target-dir
 	nvc++ -O3 -std=c++17 -stdpar=gpu -target=gpu -gpu=cc86 -o $(BUILD_DIR)/increase-std-par increase-std-par.cpp
 
-$(BUILD_DIR)/increase-kokkos-serial: increase-kokkos.cpp increase-util.h ../../util.h
-	g++ -O3 -march=native -std=c++17 -I/root/kokkos/install-serial/include -L/root/kokkos/install-serial/lib -o $(BUILD_DIR)/increase-kokkos-serial increase-kokkos.cpp -lkokkoscore -ldl
+$(BUILD_DIR)/increase-thrust-expl: increase-thrust-expl.cu increase-util.h ../util.h | mk-target-dir
+	nvcc -O3 -std=c++17 --extended-lambda -arch=sm_86 -o $(BUILD_DIR)/increase-thrust-expl increase-thrust-expl.cu
 
-$(BUILD_DIR)/increase-kokkos-omp-host: increase-kokkos.cpp increase-util.h ../../util.h
-	g++ -O3 -march=native -std=c++17 -fopenmp -I/root/install-omp/include -L/root/install-omp/lib -o $(BUILD_DIR)/increase-kokkos-omp-host increase-kokkos.cpp -lkokkoscore -ldl
+$(BUILD_DIR)/increase-thrust-mm: increase-thrust-mm.cu increase-util.h ../util.h | mk-target-dir
+	nvcc -O3 -std=c++17 --extended-lambda -arch=sm_86 -o $(BUILD_DIR)/increase-thrust-mm increase-thrust-mm.cu
 
-$(BUILD_DIR)/increase-kokkos-cuda: increase-kokkos.cpp increase-util.h ../../util.h
-	/root/kokkos/install-cuda/bin/nvcc_wrapper -O3 -march=native -std=c++17 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -I/root/kokkos/install-cuda/include -L/root/kokkos/install-cuda/lib -o $(BUILD_DIR)/increase-kokkos-cuda increase-kokkos.cpp -lkokkoscore -ldl -lcuda
+$(BUILD_DIR)/increase-kokkos-serial: increase-kokkos.cpp increase-util.h ../util.h | mk-target-dir
+	g++ -O3 -march=native -std=c++20 -I/root/kokkos/install-serial/include -L/root/kokkos/install-serial/lib -o $(BUILD_DIR)/increase-kokkos-serial increase-kokkos.cpp -lkokkoscore -ldl
+
+$(BUILD_DIR)/increase-kokkos-omp-host: increase-kokkos.cpp increase-util.h ../util.h | mk-target-dir
+	g++ -O3 -march=native -std=c++20 -fopenmp -I/root/kokkos/install-omp/include -L/root/kokkos/install-omp/lib -o $(BUILD_DIR)/increase-kokkos-omp-host increase-kokkos.cpp -lkokkoscore -ldl
+
+$(BUILD_DIR)/increase-kokkos-cuda: increase-kokkos.cpp increase-util.h ../util.h | mk-target-dir
+	/root/kokkos/install-cuda/bin/nvcc_wrapper -O3 -march=native -std=c++20 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -I/root/kokkos/install-cuda/include -L/root/kokkos/install-cuda/lib -o $(BUILD_DIR)/increase-kokkos-cuda increase-kokkos.cpp -lkokkoscore -ldl -lcuda
 
 
 # aliases without build directory
@@ -121,6 +129,12 @@ increase-sycl-mm: $(BUILD_DIR)/increase-sycl-mm
 
 .PHONY: increase-std-par
 increase-std-par: $(BUILD_DIR)/increase-std-par
+
+.PHONY: increase-thrust-expl
+increase-thrust-expl: $(BUILD_DIR)/increase-thrust-expl
+
+.PHONY: increase-thrust-mm
+increase-thrust-mm: $(BUILD_DIR)/increase-thrust-mm
 
 .PHONY: increase-kokkos-serial
 increase-kokkos-serial: $(BUILD_DIR)/increase-kokkos-serial
@@ -182,6 +196,14 @@ bench: all
 
 	@echo "std::par:"
 	$(BUILD_DIR)/increase-std-par $(PARAMETERS)
+	@echo ""
+
+	@echo "Thrust Explicit Memory:"
+	$(BUILD_DIR)/increase-thrust-expl $(PARAMETERS)
+	@echo ""
+
+	@echo "Thrust Managed Memory:"
+	$(BUILD_DIR)/increase-thrust-mm $(PARAMETERS)
 	@echo ""
 
 	@echo "Kokkos Host Serial:"
