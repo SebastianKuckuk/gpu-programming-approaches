@@ -8,6 +8,8 @@ build/print-numbers/*
 !build/print-numbers/.gitkeep
 build/increase/*
 !build/increase/.gitkeep
+build/matrix-add/*
+!build/matrix-add/.gitkeep
 
 build/stream/*
 !build/stream/.gitkeep
