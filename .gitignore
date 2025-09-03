@@ -4,6 +4,8 @@ __pycache__
 
 *.sqlite
 
+build/print-numbers/*
+!build/print-numbers/.gitkeep
 build/increase/*
 !build/increase/.gitkeep
 
