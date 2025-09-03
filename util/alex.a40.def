@@ -3,12 +3,12 @@ From: nvcr.io/nvidia/nvhpc:25.3-devel-cuda_multi-ubuntu22.04
 
 
 %runscript
-   #!/bin/bash
+    #!/bin/bash
 
-   source /opt/intel/oneapi/setvars.sh --include-intel-llvm
+    source /opt/intel/oneapi/setvars.sh --include-intel-llvm
 
-   jupyter lab --no-browser --ip 0.0.0.0 --port 14860
-   # batchspawner-singleuser jupyterhub-singleuser
+    jupyter lab --no-browser --ip 0.0.0.0 --port 14860
+    # batchspawner-singleuser jupyterhub-singleuser
 
 
 %environment
@@ -20,12 +20,12 @@ From: nvcr.io/nvidia/nvhpc:25.3-devel-cuda_multi-ubuntu22.04
     source "/root/conda/etc/profile.d/conda.sh"
 
     conda config --append envs_dirs /root/conda-env
-    conda activate nhr-summer-school-2025
+    conda activate gpu-courses
 
 
 %post
     # set up basics
-
+    
     apt update
     apt dist-upgrade -y
 
@@ -38,7 +38,7 @@ From: nvcr.io/nvidia/nvhpc:25.3-devel-cuda_multi-ubuntu22.04
 
 
     # navigate to root folder
-
+    
     cd /root
 
 
@@ -50,9 +50,11 @@ From: nvcr.io/nvidia/nvhpc:25.3-devel-cuda_multi-ubuntu22.04
 
     . "/root/conda/etc/profile.d/conda.sh"
 
-    conda create -c conda-forge -p /root/conda-env/nhr-summer-school-2025 -y
+    conda update -n base -c conda-forge conda -y
+
+    conda create -c conda-forge -p /root/conda-env/gpu-courses -y
     conda config --append envs_dirs /root/conda-env
-    conda activate nhr-summer-school-2025
+    conda activate gpu-courses
 
     conda install sympy \
                     pandas \
