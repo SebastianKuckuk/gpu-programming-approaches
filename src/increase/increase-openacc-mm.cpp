@@ -2,7 +2,7 @@
 
 
 inline void increase(double *data, size_t nx) {
-#pragma acc parallel loop present(data[0 : nx], data[0 : nx])
+#pragma acc parallel loop
     for (size_t i0 = 0; i0 < nx; ++i0) {
         data[i0] += 1;
     }
