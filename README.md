@@ -50,10 +50,9 @@ The workshop concludes with multi-leveled a [programming challenge](./material/p
 Interested in deepening your knowledge about GPU programming?
 Check out this selection of the diverse courses portfolio offered by NHR@FAU:
 * CUDA
-  * [Fundamentals of Accelerated Computing with CUDA C/C++](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_4)
-  * [Accelerating CUDA C++ Applications with Multiple GPUs](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_7)
-  * [Scaling CUDA C++ Applications to Multiple Nodes](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_8)
-* Thrust (and some CUDA): [Fundamentals of Accelerated Computing with Modern CUDA C++](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_3)
-* OpenMP (incl. target offloading): [Introduction to Parallel Programming with OpenMP](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_14)
-* OpenACC: [Fundamentals of Accelerated Computing with OpenACC](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_6)
-* [GPU Performance Engineering](https://hpc.fau.de/teaching/tutorials-and-courses/#collapse_9)
+  * [Fundamentals of Accelerated Computing with CUDA C/C++](https://hpc.fau.de/teaching/tutorials-and-courses/fundamentals-cuda-c-cpp/)
+  * [Scaling CUDA-Accelerated Applications](https://hpc.fau.de/teaching/tutorials-and-courses/scaling-cuda/)
+* Thrust (and some CUDA): [Fundamentals of Accelerated Computing with Modern CUDA C++](https://hpc.fau.de/teaching/tutorials-and-courses/fundamentals-modern-cuda-cpp/)
+* OpenMP (incl. target offloading): [Introduction to Parallel Programming with OpenMP](https://hpc.fau.de/teaching/tutorials-and-courses/openmp/)
+* OpenACC: [Fundamentals of Accelerated Computing with OpenACC](https://hpc.fau.de/teaching/tutorials-and-courses/fundamentals-openacc/)
+* [GPU Performance Engineering](https://hpc.fau.de/teaching/tutorials-and-courses/gpu-perf-eng/)
