@@ -66,13 +66,13 @@ $(BUILD_DIR)/matrix-add-cuda-mm: matrix-add-cuda-mm.cu matrix-add-util.h ../util
 	nvcc -O3 -std=c++17 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -o $(BUILD_DIR)/matrix-add-cuda-mm matrix-add-cuda-mm.cu
 
 $(BUILD_DIR)/matrix-add-sycl-buffer: matrix-add-sycl-buffer.cpp matrix-add-util.h ../util.h | mk-target-dir
-	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/matrix-add-sycl-buffer matrix-add-sycl-buffer.cpp
+	acpp -O3 -march=native -std=c++17 --acpp-targets="cuda:sm_86" -o $(BUILD_DIR)/matrix-add-sycl-buffer matrix-add-sycl-buffer.cpp
 
 $(BUILD_DIR)/matrix-add-sycl-expl: matrix-add-sycl-expl.cpp matrix-add-util.h ../util.h | mk-target-dir
-	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/matrix-add-sycl-expl matrix-add-sycl-expl.cpp
+	acpp -O3 -march=native -std=c++17 --acpp-targets="cuda:sm_86" -o $(BUILD_DIR)/matrix-add-sycl-expl matrix-add-sycl-expl.cpp
 
 $(BUILD_DIR)/matrix-add-sycl-mm: matrix-add-sycl-mm.cpp matrix-add-util.h ../util.h | mk-target-dir
-	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/matrix-add-sycl-mm matrix-add-sycl-mm.cpp
+	acpp -O3 -march=native -std=c++17 --acpp-targets="cuda:sm_86" -o $(BUILD_DIR)/matrix-add-sycl-mm matrix-add-sycl-mm.cpp
 
 $(BUILD_DIR)/matrix-add-std-par: matrix-add-std-par.cpp matrix-add-util.h ../util.h | mk-target-dir
 	nvc++ -O3 -std=c++17 -stdpar=gpu -target=gpu -gpu=cc86 -o $(BUILD_DIR)/matrix-add-std-par matrix-add-std-par.cpp
@@ -90,7 +90,7 @@ $(BUILD_DIR)/matrix-add-kokkos-omp-host: matrix-add-kokkos.cpp matrix-add-util.h
 	g++ -O3 -march=native -std=c++20 -fopenmp -I/root/kokkos/install-omp/include -L/root/kokkos/install-omp/lib -o $(BUILD_DIR)/matrix-add-kokkos-omp-host matrix-add-kokkos.cpp -lkokkoscore -ldl
 
 $(BUILD_DIR)/matrix-add-kokkos-cuda: matrix-add-kokkos.cpp matrix-add-util.h ../util.h | mk-target-dir
-	/root/kokkos/install-cuda/bin/nvcc_wrapper -O3 -march=native -std=c++20 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -I/root/kokkos/install-cuda/include -L/root/kokkos/install-cuda/lib -o $(BUILD_DIR)/matrix-add-kokkos-cuda matrix-add-kokkos.cpp -lkokkoscore -ldl -lcuda
+	/root/kokkos/install-cuda-86/bin/nvcc_wrapper -O3 -march=native -std=c++20 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -I/root/kokkos/install-cuda-86/include -L/root/kokkos/install-cuda-86/lib -o $(BUILD_DIR)/matrix-add-kokkos-cuda matrix-add-kokkos.cpp -lkokkoscore -ldl -lcuda
 
 
 # aliases without build directory

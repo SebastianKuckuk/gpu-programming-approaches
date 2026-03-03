@@ -51,7 +51,7 @@ $(BUILD_DIR)/print-numbers-cuda: print-numbers-cuda.cu print-numbers-util.h ../u
 	nvcc -O3 -std=c++17 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -o $(BUILD_DIR)/print-numbers-cuda print-numbers-cuda.cu
 
 $(BUILD_DIR)/print-numbers-sycl: print-numbers-sycl.cpp print-numbers-util.h ../util.h | mk-target-dir
-	icpx -O3 -march=native -std=c++17 -fsycl -fsycl-targets=nvptx64-nvidia-cuda -Xsycl-target-backend --cuda-gpu-arch=sm_86 -o $(BUILD_DIR)/print-numbers-sycl print-numbers-sycl.cpp
+	acpp -O3 -march=native -std=c++17 --acpp-targets="cuda:sm_86" -o $(BUILD_DIR)/print-numbers-sycl print-numbers-sycl.cpp
 
 $(BUILD_DIR)/print-numbers-std-par: print-numbers-std-par.cpp print-numbers-util.h ../util.h | mk-target-dir
 	nvc++ -O3 -std=c++17 -stdpar=gpu -target=gpu -gpu=cc86 -o $(BUILD_DIR)/print-numbers-std-par print-numbers-std-par.cpp
@@ -66,7 +66,7 @@ $(BUILD_DIR)/print-numbers-kokkos-omp-host: print-numbers-kokkos.cpp print-numbe
 	g++ -O3 -march=native -std=c++20 -fopenmp -I/root/kokkos/install-omp/include -L/root/kokkos/install-omp/lib -o $(BUILD_DIR)/print-numbers-kokkos-omp-host print-numbers-kokkos.cpp -lkokkoscore -ldl
 
 $(BUILD_DIR)/print-numbers-kokkos-cuda: print-numbers-kokkos.cpp print-numbers-util.h ../util.h | mk-target-dir
-	/root/kokkos/install-cuda/bin/nvcc_wrapper -O3 -march=native -std=c++20 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -I/root/kokkos/install-cuda/include -L/root/kokkos/install-cuda/lib -o $(BUILD_DIR)/print-numbers-kokkos-cuda print-numbers-kokkos.cpp -lkokkoscore -ldl -lcuda
+	/root/kokkos/install-cuda-86/bin/nvcc_wrapper -O3 -march=native -std=c++20 -arch=sm_86 --expt-extended-lambda --expt-relaxed-constexpr -I/root/kokkos/install-cuda-86/include -L/root/kokkos/install-cuda-86/lib -o $(BUILD_DIR)/print-numbers-kokkos-cuda print-numbers-kokkos.cpp -lkokkoscore -ldl -lcuda
 
 
 # aliases without build directory
