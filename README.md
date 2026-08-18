@@ -1,6 +1,6 @@
-# GPU Programming Approaches
+# Choosing GPU Programming Approaches
 
-This repository collects material for the full-day workshop *GPU Programming Approaches*.
+This repository collects material for the full-day workshop *Choosing GPU Programming Approaches*.
 
 Start with [this notebook](./start-here.ipynb) to get an overview of included sections and possible course flows.
 
